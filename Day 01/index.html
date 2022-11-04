@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Day 01 - Drum Kit</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="keys">
+        <div data-key="a" class="key">
+            <kbd>A</kbd>
+        </div>
+        <div data-key="s" class="key">
+            <kbd>S</kbd>
+        </div>
+        <div data-key="d" class="key">
+            <kbd>D</kbd>
+        </div>
+        <div data-key="f" class="key">
+            <kbd>F</kbd>
+        </div>
+        <div data-key="g" class="key">
+            <kbd>G</kbd>
+        </div>
+        <div data-key="h" class="key">
+            <kbd>H</kbd>
+        </div>
+        <div data-key="j" class="key">
+            <kbd>J</kbd>
+        </div>
+        <div data-key="k" class="key">
+            <kbd>K</kbd>
+        </div>
+        <div data-key="l" class="key">
+            <kbd>L</kbd>
+        </div>
+    </div>
+
+    <audio data-key="a" src="sounds/boom.wav"></audio>
+    <audio data-key="s" src="sounds/clap.wav"></audio>
+    <audio data-key="d" src="sounds/hihat.wav"></audio>
+    <audio data-key="f" src="sounds/kick.wav"></audio>
+    <audio data-key="g" src="sounds/openhat.wav"></audio>
+    <audio data-key="h" src="sounds/ride.wav"></audio>
+    <audio data-key="j" src="sounds/snare.wav"></audio>
+    <audio data-key="k" src="sounds/tink.wav"></audio>
+    <audio data-key="l" src="sounds/tom.wav"></audio>
+
+    <script>
+
+        function playSound(e){
+            const audio = document.querySelector(`audio[data-key='${e.key}']`); //fetching the audio
+            const key = document.querySelector(`div[data-key='${e.key}']`); //fetching the div
+
+            if (!audio) return; 
+            
+            audio.currentTime = 0;
+            audio.play();
+
+            key.classList.add("playing"); //adding animation
+        }
+
+        function removeTransition(e){
+            if(e.propertyName!== "transform") return;
+            this.classList.remove("playing"); //removing animation
+        }
+
+        window.addEventListener("keydown", playSound);
+
+        const keys = document.querySelectorAll(".key");
+
+        // Anyone can declare with this way, but its board and can be confusing so the easy way to delcare each function seperately
+        /* keys.forEach(function(k){
+            k.addEventListener("transitionend", function(e){
+                this.classList.remove("playing");
+            });
+        }); */
+
+        keys.forEach(element => {
+            element.addEventListener("transitionend", removeTransition);    
+        });
+
+    </script>
+</body>
+</html>
